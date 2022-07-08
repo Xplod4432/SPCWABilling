@@ -8,7 +8,7 @@
 
         public function insertDetails($plot,$oname,$resname,$contact,$paid,$mstatus){
             try {
-                $sql = "INSERT INTO pending_appr (`plot_no`, `owner_name`, `contact`, `occupant_name`, `membership_status`, `paid_upto`) VALUES (:plot,:oname,:resname,:contact,:mstatus,:paid)";
+                $sql = "INSERT INTO pending_appr (`plot_no`, `owner_name`, `occupant_name`, `contact`, `membership_status`, `paid_upto`) VALUES (:plot,:oname,:resname,:contact,:mstatus,:paid)";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindparam(':plot',$plot);
                 $stmt->bindparam(':oname',$oname);
@@ -24,11 +24,16 @@
             }
         }
 
-        public function getCourses(){
+        public function getPendingReg(){
             try{
-                $sql = "SELECT * FROM `courses`";
+                $sql = "SELECT * FROM `pending_appr`";
                 $result = $this->db->query($sql);
-                return $result;
+                if ($result->rowCount() > 0) {
+                    return $result;
+                }
+                else {
+                    return 0;
+                }
             }catch (PDOException $e) {
                 echo $e->getMessage();
                 return false;
@@ -36,62 +41,24 @@
             
         }
 
-        public function insertTests($cid,$dot,$mm){
+        public function countResidentByPlot($plot){
             try {
-                $sql = "INSERT INTO `tests`(`course_id`, `dateoftest`, `max_marks`) VALUES (:cid,:dot,:mm)";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bindparam(':cid',$cid);
-                $stmt->bindparam(':dot',$dot);
-                $stmt->bindparam(':mm',$mm);
-                $stmt->execute();
-                return true;
+                $sql = "SELECT * FROM `residents_data` WHERE `plot_no` = $plot";
+                $result = $this->db->query($sql);
+                return $result->rowCount();
             } catch (PDOException $e) {
                 echo $e->getMessage();
                 return false;
             }
         }
 
-        public function attemptTest($Sid,$tid,$mob){
+        public function getPendingById($id){
             try {
-                $sql = "INSERT INTO `testattempted`(`test_id`, `id`, `marks_ob`) VALUES (:tid,:Sid,:mob)";
+                $sql = "SELECT * FROM pending_appr WHERE tid = :id";
                 $stmt = $this->db->prepare($sql);
-                $stmt->bindparam(':Sid',$Sid);
-                $stmt->bindparam(':tid',$tid);
-                $stmt->bindparam(':mob',$mob);
+                $stmt->bindparam(':id',$id);
                 $stmt->execute();
-                return true;
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }
-        }
-        
-        public function getTests(){
-            try{
-                $sql = "SELECT * FROM `tests` a inner join courses s on a.course_id = s.course_id WHERE `dateoftest` >= CURDATE()";
-                $result = $this->db->query($sql);
-                return $result;                
-            }catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }   
-        }
-
-        public function getAllTests(){
-            try{
-                $sql = "SELECT * FROM `tests` a inner join courses s on a.course_id = s.course_id ORDER BY dateoftest DESC";
-                $result = $this->db->query($sql);
-                return $result;
-            }catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }   
-        }
-
-        public function getTestsById($testid){
-            try {
-                $sql = "SELECT * FROM `testattempted` a inner join userdetails s on a.id = s.id WHERE`test_id` = $testid";
-                $result = $this->db->query($sql);
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 return $result;
             } catch (PDOException $e) {
                 echo $e->getMessage();
@@ -101,111 +68,54 @@
 
         public function getResidentByPlot($plot){
             try {
-                $sql = "SELECT * FROM `residents_data` WHERE `plot_no` = $plot";
+                $sql = "SELECT * FROM residents_data WHERE plot_no = :plot";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(':plot',$plot);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                return $result;
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }
+        }
+
+        public function approveRegistration($id){
+            try {
+                $sql = "INSERT INTO residents_data (plot_no, owner_name, contact, occupant_name, membership_status, paid_upto)
+                SELECT plot_no, owner_name, contact, occupant_name, membership_status, paid_upto
+                FROM pending_appr
+                WHERE tid = $id";
                 $result = $this->db->query($sql);
-                if ($result->rowCount() > 0) {
-                    return $result;
-                }
-                else {
-                    return 0;
-                    echo "NO";
-                }
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }
-        }
-
-        public function insertAssgn($cid,$dot,$mm){
-            try {
-                $sql = "INSERT INTO `assignments`(`course_id`, `last_date`, `max_marks`) VALUES (:cid,:dot,:mm)";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bindparam(':cid',$cid);
-                $stmt->bindparam(':dot',$dot);
-                $stmt->bindparam(':mm',$mm);
-                $stmt->execute();
-                return true;
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }
-        }
-
-        public function updateAssgnMarks($subid,$mob){
-            try {
-                $sql = "UPDATE `assgn_submitted` SET `marksob`=:mob WHERE submit_id = :subid";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bindparam(':subid',$subid);
-                $stmt->bindparam(':mob',$mob);
-                $stmt->execute();
-                return true;
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }
-        }
-
-        public function uploadAssignment($Sid,$tid,$mob){
-            try {
-                $sql = "INSERT INTO `assgn_submitted`(`assign_id`, `id`, `upload_file`) VALUES (:Sid,:tid,:mob)";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bindparam(':Sid',$Sid);
-                $stmt->bindparam(':tid',$tid);
-                $stmt->bindparam(':mob',$mob);
-                $stmt->execute();
-                return true;
+                $sql = "DELETE FROM pending_appr WHERE tid = $id";
+                $result = $this->db->query($sql);
+                return $result;
             } catch (PDOException $e) {
                 echo $e->getMessage();
                 return false;
             }
         }
         
-        public function getAllAssignments(){
-            try{
-                $sql = "SELECT * FROM `assignments` a inner join courses s on a.course_id = s.course_id ORDER BY last_date DESC";
-                $result = $this->db->query($sql);
-                return $result;
+        public function editDetails($id,$plot,$oname,$resname,$contact,$paid,$mstatus){
+            try{ 
+                $sql = "UPDATE `residents_data` SET `plot_no`=:plot,`owner_name`=:oname,`contact`=:contact,`occupant_name`= :resname,`membership_status`=:mstatus,`paid_upto`=:paid WHERE resident_id = :id";
+                $stmt = $this->db->prepare($sql);
+                // bind all placeholders to the actual values
+                $stmt->bindparam(':id',$id);
+                $stmt->bindparam(':plot',$plot);
+                $stmt->bindparam(':oname',$oname);
+                $stmt->bindparam(':resname',$resname);
+                $stmt->bindparam(':contact',$contact);
+                $stmt->bindparam(':mstatus',$mstatus);
+                $stmt->bindparam(':paid',$paid);
+                // execute statement
+                $stmt->execute();
+                return true;
             }catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
+             echo $e->getMessage();
+             return false;
             }
-            
-        }
-
-        public function getAssignments(){
-            try{
-                $sql = "SELECT * FROM `assignments` a inner join courses s on a.course_id = s.course_id WHERE `last_date` >= CURDATE()";
-                $result = $this->db->query($sql);
-                return $result;
-            }catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }
-            
-        }
-
-        public function getAssignmentsById($assgnid){
-            try {
-                $sql = "SELECT * FROM `assgn_submitted` a inner join userdetails s on a.id = s.id WHERE `assign_id` = $assgnid";
-                $result = $this->db->query($sql);
-                return $result;
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }
-        }
-
-        public function getAssignmentsBySId($id){
-            try {
-                $sql = "SELECT * FROM `assgn_submitted` a inner join assignments s on a.assign_id = s.assign_id WHERE `id` = $id";
-                $result = $this->db->query($sql);
-                return $result;
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }
-        }
- 
+             
+         }
     }
-    
 ?>

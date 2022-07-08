@@ -8,7 +8,7 @@
     <form method="post" action="success.php" enctype="multipart/form-data" autocomplete="off">
         <div class="mb-3">
             <label for="plot" class="form-label">Plot No</label>
-            <input required type="text" class="form-control" id="plot" name="blogtitle">
+            <input required type="text" class="form-control" id="plot" name="plot">
         </div>
         <div class="mb-3">
             <label for="oname" class="form-label">Full name of Owner</label>

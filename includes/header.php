@@ -73,16 +73,12 @@ body {
           </ul>
       </ul>
       <ul class="nav navbar-nav ml-auto">
-      <li class="nav-item dropdown">
-          <a class="nav-link bold ms-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span>
-              Hello <?php echo $_SESSION['username']?>
-            </span>
-          </a>
-        </li>
         <li class="nav-item">
           <a class="bold btn btn-orange-moon rounded-3 ms-5" href="./logout.php">Logout</a>
-        </li><?php } ?></div>
+        </li>
+      </ul>
+      <?php } ?>
+    </div>
   </div>
 </nav>
 <div class="container">
