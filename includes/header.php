@@ -42,7 +42,7 @@ body {
   <div class="container-fluid">
   <a class="navbar-brand align-baseline" href="./index.php">
         <i class="bi bi-receipt-cutoff d-inline-block align-text-top" alt="" height="38"></i>
-				<span style="color: rgba(227,48,2,1); vertical-align: middle; font-size: 1rem; position: relative;" class="bold px-2">SPCWA Billing</span>
+				<span style="color: rgba(227,48,2,1); vertical-align: middle; font-size: 1rem; position: relative;" class="bold px-2">SPCWA Billing (TEST ONLY)</span>
 			</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -53,25 +53,6 @@ body {
           <a class="nav-link bold mx-5" aria-current="page" href="./index.php">Home</a>
         </li>
         <?php if (isset($_SESSION['userid'])){?>
-        <li class="nav-item dropdown bold mx-5">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span>
-              <?php if ($_SESSION['accesslevel'] == 3) { echo "Actions"; }?>
-              <?php if ($_SESSION['accesslevel'] == 2) { echo "Generate Receipt"; }?>
-            </span>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <?php if ($_SESSION['accesslevel'] == 3) { ?>
-            <li><a class="dropdown-item" href="./newassgn.php">Create Assignment</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="./newtests.php">Create Test</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="./viewassgn.php">View Assignments</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="./viewtests.php">View Tests</a></li>
-            <?php } ?>
-          </ul>
-      </ul>
       <ul class="nav navbar-nav ml-auto">
         <li class="nav-item">
           <a class="bold btn btn-orange-moon rounded-3 ms-5" href="./logout.php">Logout</a>

@@ -33,7 +33,7 @@
     </div>
   </a>
 </div>
-<?php if ($_SESSION['accesslevel'] == 3) { ?>
+<?php if ($_SESSION['accesslevel'] >= 2) { ?>
   <div class="col-sm-12 col-md-8 col-lg-6 my-5">
   <a href="./pendinglist.php" style="color:black; text-decoration:none;">
     <div class="card p-4">

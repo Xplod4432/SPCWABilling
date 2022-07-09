@@ -8,18 +8,18 @@
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $username = test_input(strtolower(trim($_POST['username'])));
         $password = test_input($_POST['password']);
-        //$new_password = md5($password.$username);
-
-        $result = $user->getUser($username,$password);
+        $new_password = $password.$username;
+        $new_password = hash("sha512", $new_password);
+        $result = $user->getUser($username,$new_password);
         if(!$result){
             echo '<div class="alert alert-danger">Username or Password is incorrect! Please try again. </div>';
         }else{
             $_SESSION['username'] = $username;
             $_SESSION['userid'] = $result['userid'];
             $_SESSION['accesslevel'] = $result['accesslevel'];
+            $_SESSION['posname'] = $result['curposholder'];
             header("Location: index.php");
         }
-
     }
 ?>
 

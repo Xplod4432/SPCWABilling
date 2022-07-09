@@ -81,6 +81,20 @@
             }
         }
 
+        public function getResidentById($id){
+            try {
+                $sql = "SELECT * FROM residents_data WHERE resident_id = :id";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(':id',$id);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                return $result;
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }
+        }
+
         public function approveRegistration($id){
             try {
                 $sql = "INSERT INTO residents_data (plot_no, owner_name, contact, occupant_name, membership_status, paid_upto, resident_type)
@@ -138,6 +152,48 @@
                 $result = $this->db->query($sql);
                 return $result;
             }catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }
+        }
+
+        public function insertPayReceipt($id,$amount,$paytype,$refnum,$paydate,$biller,$addmonth){
+            try {
+                $sql = "INSERT INTO `maintenance_receipt`(`resident_id`, `amount`, `payment_type`, `txndetail`, `timestamp`, `billedby`) VALUES (:id,:amount,:paytype,:refnum,:paydate,:biller)";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(':id',$id);
+                $stmt->bindparam(':amount',$amount);
+                $stmt->bindparam(':paytype',$paytype);
+                $stmt->bindparam(':refnum',$refnum);
+                $stmt->bindparam(':paydate',$paydate);
+                $stmt->bindparam(':biller',$biller);
+                $res = $stmt->execute();
+                $billid = $this->db->lastInsertId();
+                if ($res) {
+                    if($this->updatePaidMonth($id, $addmonth)) {
+                        return $billid;
+                    }
+                    else {
+                        $this->deleteTransaction($billid);
+                        return -1;
+                    }
+                }
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }
+        }
+
+        private function updatePaidMonth($id, $addmonth) {
+            try{ 
+                $sql = "UPDATE `residents_data` SET `paid_upto`= DATE_ADD((SELECT paid_upto FROM residents_data WHERE resident_id = :id), INTERVAL :addmonth MONTH) WHERE resident_id = :rid;";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(':id',$id);
+                $stmt->bindparam(':addmonth',$addmonth);
+                $stmt->bindparam(':rid',$id);
+                $stmt->execute();
+                return true;
+            } catch (PDOException $e) {
                 echo $e->getMessage();
                 return false;
             }
