@@ -13,6 +13,7 @@
 <table class="table">
         <tr>
             <th>Plot No</th>
+            <th>Plot Type</th>
             <th>Resident Name</th>
             <th>Contact</th>
             <th>Paid Upto</th>
@@ -21,6 +22,7 @@
         <?php while ($r = $results->fetch(PDO::FETCH_ASSOC)) { ?>
             <tr>
                 <td><?php echo $r['plot_no'] ?></td>
+                <td><?php echo $r['resident_type'] ?></td>
                 <td><?php echo $r['occupant_name'] ?></td>
                 <td><?php echo $r['contact'] ?></td>
                 <td><?php echo $r['paid_upto'] ?></td>

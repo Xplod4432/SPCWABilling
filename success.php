@@ -13,9 +13,10 @@
         $contact = test_input($_POST['phone']);
         $paid = test_input($_POST['paid']);
         $mstatus = test_input($_POST['mstatus']);
+        $ptype = test_input($_POST['ptype']);
 
         //Call function to insert and track if success or not
-        $isSuccess = $crud->insertDetails($plot,$oname,$resname,$contact,$paid,$mstatus);
+        $isSuccess = $crud->insertDetails($plot,$oname,$resname,$contact,$paid,$mstatus,$ptype);
         if($isSuccess){
             include 'includes/successmessage.php';
         }

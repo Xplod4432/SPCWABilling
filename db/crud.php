@@ -6,9 +6,9 @@
             $this->db = $conn;
         }
 
-        public function insertDetails($plot,$oname,$resname,$contact,$paid,$mstatus){
+        public function insertDetails($plot,$oname,$resname,$contact,$paid,$mstatus,$ptype){
             try {
-                $sql = "INSERT INTO pending_appr (`plot_no`, `owner_name`, `occupant_name`, `contact`, `membership_status`, `paid_upto`) VALUES (:plot,:oname,:resname,:contact,:mstatus,:paid)";
+                $sql = "INSERT INTO pending_appr (`plot_no`, `owner_name`, `occupant_name`, `contact`, `membership_status`, `paid_upto`, `resident_type`) VALUES (:plot,:oname,:resname,:contact,:mstatus,:paid,:ptype)";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindparam(':plot',$plot);
                 $stmt->bindparam(':oname',$oname);
@@ -16,6 +16,7 @@
                 $stmt->bindparam(':contact',$contact);
                 $stmt->bindparam(':mstatus',$mstatus);
                 $stmt->bindparam(':paid',$paid);
+                $stmt->bindparam(':ptype',$ptype);
                 $stmt->execute();
                 return true;
             } catch (PDOException $e) {
@@ -26,7 +27,7 @@
 
         public function getPendingReg(){
             try{
-                $sql = "SELECT * FROM `pending_appr`";
+                $sql = "SELECT * FROM `pending_appr` p INNER JOIN plot_types t ON p.resident_type = t.resident_type";
                 $result = $this->db->query($sql);
                 if ($result->rowCount() > 0) {
                     return $result;
@@ -68,7 +69,7 @@
 
         public function getResidentByPlot($plot){
             try {
-                $sql = "SELECT * FROM residents_data WHERE plot_no = :plot";
+                $sql = "SELECT * FROM residents_data p INNER JOIN plot_types t ON p.resident_type = t.resident_type WHERE plot_no = :plot";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindparam(':plot',$plot);
                 $stmt->execute();
@@ -82,8 +83,8 @@
 
         public function approveRegistration($id){
             try {
-                $sql = "INSERT INTO residents_data (plot_no, owner_name, contact, occupant_name, membership_status, paid_upto)
-                SELECT plot_no, owner_name, contact, occupant_name, membership_status, paid_upto
+                $sql = "INSERT INTO residents_data (plot_no, owner_name, contact, occupant_name, membership_status, paid_upto, resident_type)
+                SELECT plot_no, owner_name, contact, occupant_name, membership_status, paid_upto, resident_type
                 FROM pending_appr
                 WHERE tid = $id";
                 $result = $this->db->query($sql);
@@ -115,7 +116,31 @@
              echo $e->getMessage();
              return false;
             }
-             
          }
+
+        public function deleteReg($id){
+            try{
+                $sql = "DELETE FROM `pending_appr` WHERE tid = :id";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(':id', $id);
+                $stmt->execute();
+                return true;
+            }catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }
+        }
+        
+        public function getPlotTypes(){
+            try{
+                $sql = "SELECT * FROM `plot_types` WHERE 1";
+                $stmt = $this->db->prepare($sql);
+                $result = $this->db->query($sql);
+                return $result;
+            }catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }
+        }
     }
 ?>
