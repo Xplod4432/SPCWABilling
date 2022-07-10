@@ -2,7 +2,7 @@
     $title = "Edit Resident Data";
     require_once './db/conn.php';
     require_once './includes/header.php';
-    require_once './includes/auth_Check.php';
+    require_once './includes/auth_check.php';
     require_once './includes/sanitise.php';
     if (isset($_GET['plot'])) {
         $plot = test_input($_GET['plot']);
