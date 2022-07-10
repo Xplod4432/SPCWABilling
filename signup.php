@@ -3,6 +3,7 @@
     require_once './db/conn.php';
     require_once './includes/header.php';
     require_once './includes/auth_check.php';
+    require_once './includes/admin_check.php';
     $results = $crud->getPlotTypes();
 ?>
     <h1 class="text-center">Resident Registration</h1>

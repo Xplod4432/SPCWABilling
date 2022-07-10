@@ -4,6 +4,7 @@
     require_once './db/conn.php';
     require './includes/sanitise.php';
     require './includes/auth_check.php';
+    require './includes/admin_check.php';
 
     if(isset($_POST['submit'])){
         //extract values from the $_POST array
@@ -43,8 +44,6 @@
     
         </div>
     </div>
-    
-
 <br>
 <br>
 <br>

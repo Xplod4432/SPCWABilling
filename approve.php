@@ -1,7 +1,8 @@
 <?php
 $title = 'Approve Registration';
     require_once './includes/header.php';
-    require_once './includes/admin_check.php';
+    require_once './includes/auth_check.php';
+    require_once './includes/master_check.php';
     require_once './db/conn.php';
     require './includes/sanitise.php';
     if (!isset($_GET['tid'])) {

@@ -3,35 +3,35 @@
     require_once './includes/header.php';
     require_once './db/conn.php';
     require_once './includes/auth_check.php';
-    require_once './includes/master_check.php';
     require './includes/sanitise.php';
     
-    $results = $crud->getPendingReg();
+    $results = $crud->getRegRes();
     if($results != 0)
     {
 ?>
-
+<div class="input-group">
+    <form class="d-flex" action="./searchres.php" method="get">
+        <input class="form-control rounded-pill" id="Search" name="Search" type="search" placeholder="Search" aria-label="Search" required>
+        <button class="btn btn-default" type="submit">
+            <span class="fa fa-search"></span>
+        </button>
+    </form>
+</div>
 <table class="table">
         <tr>
             <th>Plot No</th>
-            <th>Plot Type</th>
             <th>Resident Name</th>
             <th>Contact</th>
             <th>Paid Upto</th>
-            <th>Actions</th>
+            <th>Membership Status</th>
         </tr>
         <?php while ($r = $results->fetch(PDO::FETCH_ASSOC)) { ?>
             <tr>
                 <td><?php echo $r['plot_no'] ?></td>
-                <td><?php echo $r['typename'] ?></td>
                 <td><?php echo $r['occupant_name'] ?></td>
                 <td><?php echo $r['contact'] ?></td>
                 <td><?php echo $r['paid_upto'] ?></td>
-                <td>
-                <a href="view.php?tid=<?php echo $r['tid'] ?>" class="btn btn-primary">View</a>
-                <a onclick="return confirm('Are you sure you want to approve this record?')" href="approve.php?tid=<?php echo $r['tid'] ?>" class="btn btn-success">Approve</a>
-                <a onclick="return confirm('Are you sure you want to delete this record?')" href="reject.php?tid=<?php echo $r['tid'] ?>" class="btn btn-danger">Reject</a>
-                </td>
+                <td><?php echo $r['membership_status'] ?></td>
             </tr>
         <?php }?>
     </table>

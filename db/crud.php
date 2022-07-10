@@ -27,7 +27,7 @@
 
         public function getPendingReg(){
             try{
-                $sql = "SELECT * FROM `pending_appr` p INNER JOIN plot_types t ON p.resident_type = t.resident_type";
+                $sql = "SELECT * FROM `pending_appr` p INNER JOIN plot_types t ON p.resident_type = t.resident_type INNER JOIN registrationstatus rs ON p.regstatus = rs.statusid WHERE regstatus = 1 ORDER BY appliedon ASC";
                 $result = $this->db->query($sql);
                 if ($result->rowCount() > 0) {
                     return $result;
@@ -38,8 +38,23 @@
             }catch (PDOException $e) {
                 echo $e->getMessage();
                 return false;
-            }
-            
+            }  
+        }
+
+        public function getAllReg(){
+            try{
+                $sql = "SELECT * FROM `pending_appr` p INNER JOIN plot_types t ON p.resident_type = t.resident_type INNER JOIN registrationstatus rs ON p.regstatus = rs.statusid ORDER BY appliedon DESC";
+                $result = $this->db->query($sql);
+                if ($result->rowCount() > 0) {
+                    return $result;
+                }
+                else {
+                    return 0;
+                }
+            }catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }  
         }
 
         public function countResidentByPlot($plot){
@@ -102,7 +117,7 @@
                 FROM pending_appr
                 WHERE tid = $id";
                 $result = $this->db->query($sql);
-                $sql = "DELETE FROM pending_appr WHERE tid = $id";
+                $sql = "UPDATE `pending_appr` SET `regstatus`='2' WHERE tid = $id";
                 $result = $this->db->query($sql);
                 return $result;
             } catch (PDOException $e) {
@@ -134,11 +149,9 @@
 
         public function deleteReg($id){
             try{
-                $sql = "DELETE FROM `pending_appr` WHERE tid = :id";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bindparam(':id', $id);
-                $stmt->execute();
-                return true;
+                $sql = "UPDATE `pending_appr` SET `regstatus`='3' WHERE tid = $id";
+                $result = $this->db->query($sql);
+                return $result;
             }catch (PDOException $e) {
                 echo $e->getMessage();
                 return false;
@@ -197,6 +210,62 @@
                 echo $e->getMessage();
                 return false;
             }
+        }
+
+        public function searchRegs($search){
+            try{
+                $sql = "SELECT * FROM `pending_appr` p INNER JOIN plot_types t ON p.resident_type = t.resident_type INNER JOIN registrationstatus rs ON p.regstatus = rs.statusid  WHERE UPPER(plot_no) = UPPER(:search)";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindvalue(':search',$search);
+                $stmt->execute();
+                while ($r=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $card_title = $r['plot_no'];
+                    $card_tag = $r['occupant_name'];
+                    $card_date = $r['appliedon'];
+                    $card_text = $r['contact'];
+                    $card_author = $r['statusname'];
+                    include "./includes/scards.php";
+                }
+            }catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+           }
+        }
+
+        public function getRegRes(){
+            try{
+                $sql = "SELECT * FROM `residents_data` r INNER JOIN plot_types t ON r.resident_type = t.resident_type ORDER BY plot_no ASC";
+                $result = $this->db->query($sql);
+                if ($result->rowCount() > 0) {
+                    return $result;
+                }
+                else {
+                    return 0;
+                }
+            }catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }  
+        }
+
+        public function searchRes($search){
+            try{
+                $sql = "SELECT * FROM `residents_data` r INNER JOIN plot_types t ON r.resident_type = t.resident_type WHERE UPPER(plot_no) = UPPER(:search)";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindvalue(':search',$search);
+                $stmt->execute();
+                while ($r=$stmt->fetch(PDO::FETCH_ASSOC)){
+                    $card_title = $r['plot_no'];
+                    $card_tag = $r['occupant_name'];
+                    $card_date = $r['paid_upto'];
+                    $card_text = $r['contact'];
+                    $card_author = $r['typename'];
+                    include "./includes/rcards.php";
+                }
+            }catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+           }
         }
     }
 ?>

@@ -2,6 +2,7 @@
     $title = "Register/Update Residents";
     require_once './includes/header.php';
     require_once './db/conn.php';
+    require './includes/auth_check.php';
     require_once './includes/admin_check.php';
     require_once './includes/sanitise.php';
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {

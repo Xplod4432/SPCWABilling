@@ -3,6 +3,7 @@
     require_once './db/conn.php';
     require_once './includes/header.php';
     require_once './includes/auth_check.php';
+    require_once './includes/admin_check.php';
 ?>
     <h1 class="text-center">Enter Plot No.</h1>
     <form method="post" action="receiptplot.php" enctype="multipart/form-data" autocomplete="off">

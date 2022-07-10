@@ -2,7 +2,8 @@
     $title = "Monthly Maintenance";
     require_once './db/conn.php';
     require_once './includes/header.php';
-    require_once './includes/auth_check.php';
+    require './includes/auth_check.php';
+    require_once './includes/admin_check.php';
     require_once './includes/sanitise.php';
     if (isset($_POST['submit'])) {
         $plot = test_input($_POST['plot']);

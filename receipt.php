@@ -3,6 +3,7 @@
     require_once './db/conn.php';
     require_once './includes/header.php';
     require_once './includes/auth_check.php';
+    require_once './includes/admin_check.php';
     require_once './includes/sanitise.php';
     //Get values from post operation
     if(isset($_POST['submit'])){
