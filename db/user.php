@@ -50,6 +50,7 @@
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindparam(':username', $username);
                 $stmt->bindparam(':pass', $password);
+                echo $password;
                 $stmt->execute();
                 $result = $stmt->fetch();
                 return $result;
