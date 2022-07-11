@@ -13,7 +13,7 @@
             header("Location: signup.php");
         }
         else {
-            header("Location: editres.php?plot=$plot");
+            self::$_headers->header("Location: editres.php?plot=$plot");//chech functionality
         }
     }
 ?>

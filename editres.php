@@ -11,30 +11,30 @@
 ?>
     <h1 class="text-center">Edit Resident Data</h1>
     <form method="post" action="editPost.php" enctype="multipart/form-data" autocomplete="off">
-        <input required type="hidden" id="rid" name="rid" value="<?php echo $res['resident_id']; ?>">
+        <input required type="hidden" id="rid" name="rid" value="<?php echo test_input($res['resident_id']); ?>">
         <div class="mb-3">
             <label for="plot" class="form-label">Plot No</label>
-            <input required type="text" class="form-control" id="plot" name="plot" value="<?php echo $res['plot_no']; ?>">
+            <input required type="text" class="form-control" id="plot" name="plot" value="<?php echo test_input($res['plot_no']); ?>">
         </div>
         <div class="mb-3">
             <label for="oname" class="form-label">Full name of Owner</label>
-            <input required type="text" class="form-control" id="oname" name="oname" value="<?php echo $res['owner_name']; ?>">
+            <input required type="text" class="form-control" id="oname" name="oname" value="<?php echo test_input($res['owner_name']); ?>">
         </div>
         <div class="mb-3">
             <label for="resname" class="form-label">Occupant Name</label>
-            <input required type="text" class="form-control" id="resname" name="resname" value="<?php echo $res['occupant_name']; ?>">
+            <input required type="text" class="form-control" id="resname" name="resname" value="<?php echo test_input($res['occupant_name']); ?>">
         </div>
         <div class="mb-3">
             <label for="phone" class="form-label">Contact Number</label>
-            <input required type="tel" class="form-control" id="phone" name="phone" value="<?php echo $res['contact']; ?>">
+            <input required type="tel" class="form-control" id="phone" name="phone" value="<?php echo test_input($res['contact']); ?>">
         </div>
         <div class="mb-3">
             <label for="paid" class="form-label">Paid Upto</label>
-            <input required type="text" class="form-control" id="paid" name="paid" value="<?php echo $res['paid_upto']; ?>">
+            <input required type="text" class="form-control" id="paid" name="paid" value="<?php echo test_input($res['paid_upto']); ?>">
         </div>
         <div class="mb-3">
             <label for="mstatus" class="form-label">Membership Status</label>
-            <select id="mstatus" name="mstatus" class="form-select" value="<?php echo $res['membership_status']; ?>">
+            <select id="mstatus" name="mstatus" class="form-select" value="<?php echo test_input($res['membership_status']); ?>">
                    <option value="1">Member</option>
                    <option value="0">Non-Member</option>
             </select>

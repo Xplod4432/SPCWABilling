@@ -16,7 +16,7 @@
                     echo "E-Mail already Registered";
                     return false;
                 } else{
-                    $new_password = md5($password.$username);
+                    $new_password = hash("sha512", $password.$username);
                     // define sql statement to be executed
                     $sql = "INSERT INTO userdetails (firstname,lastname,dateofbirth,username,password,contactnumber,course1,resaddress,avatar_path) VALUES (:fname,:lname,:dob,:username,:password,:contact,:course1,:resaddress,:destination)";
                     //prepare the sql statement for execution

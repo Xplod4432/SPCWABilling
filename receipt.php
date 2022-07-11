@@ -45,20 +45,20 @@
 </style>  
 <div id="htmlContent">
   <h2 style="color: #0094ff">Receipt Details</h2>  
-  <h3><strong>Ticket ID:</strong> <?php echo $isSuccess; ?></h3>  
+  <h3><strong>Ticket ID:</strong> <?php echo test_input($isSuccess); ?></h3>  
   <table>  
     <tbody>  
         <tr>  
             <th>Name</th>  
-            <td><?php echo $result['occupant_name']; ?></td>
+            <td><?php echo test_input($result['occupant_name']); ?></td>
         </tr>  
         <tr>  
             <th>Plot No</th>  
-            <td><?php echo $result['plot_no']; ?></td>
+            <td><?php echo test_input($result['plot_no']); ?></td>
         </tr>  
         <tr>  
             <th>Amount</th>  
-            <td><?php echo $amount; ?></td>
+            <td><?php echo test_input($amount); ?></td>
         </tr>  
         <tr>  
             <th>Date of Receipt</th>  
@@ -66,7 +66,7 @@
         </tr>
         <tr>  
             <th>Paid Upto</th>  
-            <td><?php echo $result['paid_upto']; ?></td>
+            <td><?php echo test_input($result['paid_upto']); ?></td>
         </tr>
         <tr>  
             <th>Billed By</th>  

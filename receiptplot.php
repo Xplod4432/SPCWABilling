@@ -16,31 +16,31 @@
 ?>
     <h1 class="text-center">Resident Maintenance</h1>
     <form method="post" action="receipt.php" enctype="multipart/form-data" autocomplete="off">
-        <input required type="hidden" id="rid" name="rid" value="<?php echo $res['resident_id']; ?>" readonly="readonly">
-        <input required type="hidden" id="monthlypay" name="monthlypay" value="<?php echo $res['monthly_amt']; ?>" readonly="readonly">
+        <input required type="hidden" id="rid" name="rid" value="<?php echo test_input($res['resident_id']); ?>" readonly="readonly">
+        <input required type="hidden" id="monthlypay" name="monthlypay" value="<?php echo test_input($res['monthly_amt']); ?>" readonly="readonly">
         <div class="mb-3">
             <label for="plot" class="form-label">Plot No</label>
-            <input required type="text" class="form-control" id="plot" name="plot" value="<?php echo $res['plot_no']; ?>" disabled="disabled">
+            <input required type="text" class="form-control" id="plot" name="plot" value="<?php echo test_input($res['plot_no']); ?>" disabled="disabled">
         </div>
         <div class="mb-3">
             <label for="restype" class="form-label">Residence Type</label>
-            <input id="restype" name="restype" class="form-control" value="<?php echo $res['typename']; ?>" disabled="disabled">
+            <input id="restype" name="restype" class="form-control" value="<?php echo test_input($res['typename']); ?>" disabled="disabled">
         </div>
         <div class="mb-3">
             <label for="oname" class="form-label">Full name of Owner</label>
-            <input required type="text" class="form-control" id="oname" name="oname" value="<?php echo $res['owner_name']; ?>" disabled="disabled">
+            <input required type="text" class="form-control" id="oname" name="oname" value="<?php echo test_input($res['owner_name']); ?>" disabled="disabled">
         </div>
         <div class="mb-3">
             <label for="resname" class="form-label">Occupant Name</label>
-            <input required type="text" class="form-control" id="resname" name="resname" value="<?php echo $res['occupant_name']; ?>" disabled="disabled">
+            <input required type="text" class="form-control" id="resname" name="resname" value="<?php echo test_input($res['occupant_name']); ?>" disabled="disabled">
         </div>
         <div class="mb-3">
             <label for="phone" class="form-label">Contact Number</label>
-            <input required type="tel" class="form-control" id="phone" name="phone" value="<?php echo $res['contact']; ?>" disabled="disabled">
+            <input required type="tel" class="form-control" id="phone" name="phone" value="<?php echo test_input($res['contact']); ?>" disabled="disabled">
         </div>
         <div class="mb-3">
             <label for="paid" class="form-label">Paid Upto</label>
-            <input required type="text" class="form-control" id="paid" name="paid" value="<?php echo $res['paid_upto']; ?>" disabled="disabled">
+            <input required type="text" class="form-control" id="paid" name="paid" value="<?php echo test_input($res['paid_upto']); ?>" disabled="disabled">
         </div>
         <div class="mb-3">
             <label for="mstatus" class="form-label">Membership Status</label>

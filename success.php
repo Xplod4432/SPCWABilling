@@ -30,16 +30,16 @@
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title">
-                <?php echo $_POST['resname'] ;  ?>
+                <?php echo $resname ;  ?>
             </h5>
             <p class="card-text">
-                Plot No: <?php echo $_POST['plot'];  ?>
+                Plot No: <?php echo $plot;  ?>
             </p>
             <p class="card-text">
-                Paid Upto: <?php echo $_POST['paid'];  ?>
+                Paid Upto: <?php echo $paid;  ?>
             </p>
             <p class="card-text">
-                Contact Number: <?php echo $_POST['phone'];  ?>
+                Contact Number: <?php echo $contact;  ?>
             </p>
     
         </div>

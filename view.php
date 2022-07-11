@@ -22,12 +22,12 @@
     <div class="col py-2">
       <div class="card h-100 shadow-lg p-3 mb-5 bg-white rounded">
         <div class="card-body">
-            <h5 class="card-title">Occupant Name: <?php echo $result['occupant_name']; ?></h5>
-            <p class="card-text">Plot No:<?php echo $result['plot_no']; ?></p>
-            <p class="card-text">Paid Upto:<?php echo $result['paid_upto']; ?></p>
-            <p class="card-text">Owner Name:<?php echo $result['owner_name']; ?></p>
-            <p class="card-text">Contact Number:<?php echo $result['contact']; ?></p>
-            <p class="card-text">Membership Status:<?php echo $result['membership_status']; ?></p>
+            <h5 class="card-title">Occupant Name: <?php echo test_input($result['occupant_name']); ?></h5>
+            <p class="card-text">Plot No:<?php echo test_input($result['plot_no']); ?></p>
+            <p class="card-text">Paid Upto:<?php echo test_input($result['paid_upto']); ?></p>
+            <p class="card-text">Owner Name:<?php echo test_input($result['owner_name']); ?></p>
+            <p class="card-text">Contact Number:<?php echo test_input($result['contact']); ?></p>
+            <p class="card-text">Membership Status:<?php echo test_input($result['membership_status']); ?></p>
         </div>
       </div>
     </div>
@@ -37,16 +37,5 @@
                 <a onclick="return confirm('Are you sure you want to approve this record?')" href="approve.php?tid=<?php echo $r['tid'] ?>" class="btn btn-success">Approve</a>
                 <a onclick="return confirm('Are you sure you want to delete this record?')" href="reject.php?tid=<?php echo $r['tid'] ?>" class="btn btn-danger">Reject</a>
     </div></div>
-<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><div id="iframeHolder"></div>
-<?php if(!isset($_GET['id'])){
-        include './includes/errormessage.php';
-        
-    } else{
-        $id = test_input($_GET['id']);
-        $crud->modComments($id);   
-?>
-
-
-</div>   
-<?php } }?>
+<?php } ?>
 <?php require_once 'includes/footer.php'; ?>
